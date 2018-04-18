@@ -47,11 +47,22 @@ public class Vector {
 	// Methods
 	/** Performs vector addition between this vector and another given vector. */
 	public Vector add(Vector vector) {
-		double newXVel = this.xVel + vector.xVel();
+		double newXVel = this.xVel - vector.xVel();
 		double newYVel = this.yVel + vector.yVel();
 		double newSpeed = Math.sqrt(Math.pow(newXVel, 2) + Math.pow(newYVel, 2));
-		double newDir = Math.asin(newYVel / newSpeed);
+		double newDir = Math.asin(newYVel / newSpeed) % (2*Math.PI);
 		
 		return new Vector(newSpeed, newDir);
+	}
+	
+	/** Updates this vector's x and y velocties. */
+	public void update() {
+		xVel = Math.cos(dir) * speed;
+		yVel = Math.sin(dir) * speed;
+	}
+	
+	/** Displays information about a given vector. */
+	public String toString() {
+		return "{vel: " + speed + ", dir: " + dir + "}";
 	}
 }
