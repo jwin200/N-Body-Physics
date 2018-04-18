@@ -3,13 +3,20 @@ import java.awt.Color;
 public class Body {
 
 	//fields
-	int mass;
-	double speed;
-	double dir;
-	Color color;
-	Point loc;
-	Vector body;
-	double radius;
+	private double mass;
+	private double speed;
+	private double dir;
+	private Color color;
+	private Point loc;
+	private Vector body;
+	private double radius;
+	
+	public double mass() { return mass; }
+	public double speed() { return speed; }
+	public double dir() { return dir; }
+	public Vector vector() { return body; }
+	public double radius() { return radius; }
+	public Point loc() { return loc; }
 	
 	
 	public Body(int mass, double speed, double dir, Color color, Point loc) {
@@ -25,6 +32,7 @@ public class Body {
 	}
 	
 	public void draw() {
+		StdDraw.setPenColor(color);
 		//StdDraw.setPenColor(StdDraw.color);
 		double radius = Math.sqrt(Math.sqrt(mass)/Math.PI);
 		StdDraw.filledCircle(loc.x(), loc.y(), radius);
