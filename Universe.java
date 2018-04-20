@@ -14,8 +14,8 @@ public class Universe {
 	// Newton's constant (exponent altered for scaling)
 	public static final double G = 6.674 * Math.pow(10, -8);
 	// Scales for the program window
-	public static final int XSCALE = 200;
-	public static final int YSCALE = 200;
+	public static final int XSCALE = 1000;
+	public static final int YSCALE = 1000;
 	
 	// Constructor
 	public Universe() {
@@ -29,7 +29,6 @@ public class Universe {
 		StdDraw.setXscale(0, XSCALE);
 		StdDraw.setYscale(0, YSCALE);
 		while(true) {
-			draw();
 			step();
 			
 			// Debugging
@@ -38,17 +37,11 @@ public class Universe {
 		}
 	}
 	
-	/** Draws each object in the bodies List. */
-	public void draw() {
-		StdDraw.clear();
-		for(Body body : bodies) {
-			body.draw();
-		}
-		StdDraw.show();
-	}
-	
-	/** Steps each object in the bodies List. */
+	/** Steps and draws each object in the bodies List. */
 	public void step() {
+		StdDraw.clear();
+		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.filledSquare(XSCALE/2, YSCALE/2, XSCALE/2);
 		// Cycling through each body
 		for(int i = 0; i < bodies.size(); i++) {
 			Vector force = new Vector(0, 0);
@@ -61,6 +54,7 @@ public class Universe {
 			// Imparting that force vector onto the body
 			bodies.get(i).step(force);
 		}
+		StdDraw.show();
 	}
 	
 	/** Calculating the velocity change imparted by the gravity of two bodies. */
@@ -85,11 +79,23 @@ public class Universe {
 	public void add(Body body) { bodies.add(body); }
 	
 	public static void main(String[] args) {
+		boolean showForces = true;
 		Universe universe = new Universe();
-		 universe.add(new Body(100, new Vector(0, .01), new Point(50, 100)));
-		 universe.add(new Body(100, new Vector(0, -.01), new Point(150, 100)));
-		 universe.add(new Body(1000, new Vector(-.01, 0), new Point(100, 50)));
-		 universe.add(new Body(100000, new Vector(0, 0), new Point(100, 100)));
+		Body sun = new Star(10000000, new Vector(0, 0), new Point(200, 500), showForces);
+		Body sun2 = new Star(10000000, new Vector(0, 0.03), new Point(800, 500), showForces);
+		Body earth = new Planet(500000, new Vector(0, 0.02), new Point(500, 150), showForces);
+		Body earth2 = new Planet(500000, new Vector(-.02, 0), new Point(900, 950), showForces);
+		Body planet = new Planet(100000, new Vector(-.02, 0), new Point(500, 750), showForces);
+		earth.circOrbit(sun);
+		planet.circOrbit(sun);
+		sun.binOrbit(sun2);
+		
+		universe.add(earth);
+		universe.add(planet);
+	    universe.add(sun);
+	    universe.add(sun2);
+	    universe.add(earth2);
+	    for(Body body : bodies) { System.out.println(body); }
 		 
 		 universe.run();
 	}
