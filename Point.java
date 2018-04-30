@@ -44,7 +44,7 @@ public class Point {
   public double dirTo(Point p) {
     double deltaX = p.x() - this.x;
     double deltaY = p.y() - this.y;
-    double dir = Math.atan2(deltaY, deltaX);
+    double dir = Math.atan(deltaY / deltaX);
     return dir;
   }
   

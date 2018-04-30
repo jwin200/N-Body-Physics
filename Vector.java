@@ -19,14 +19,6 @@ public class Vector {
 	public double yVel() { return yVel; }
 	
 	// Constructors
-	/*
-	public Vector(double speed, double dir) {
-		this.speed = speed;
-		this.dir = dir;
-		this.xVel = Math.cos(dir) * speed;
-		this.yVel = Math.sin(dir) * speed;
-	} */
-	
 	public Vector(double xVel, double yVel) {
 		this.xVel = xVel;
 		this.yVel = yVel;
@@ -48,12 +40,6 @@ public class Vector {
 		double newYVel = this.yVel + vector.yVel();
 		
 		return new Vector(newXVel, newYVel);
-	}
-	
-	/** Updates this vector's x and y velocties. */
-	public void update() {
-		xVel = Math.cos(dir) * speed;
-		yVel = Math.sin(dir) * speed;
 	}
 	
 	/** Displays information about a given vector. */
