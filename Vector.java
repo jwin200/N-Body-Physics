@@ -44,7 +44,7 @@ public class Vector {
 	
 	/** Displays information about a given vector. */
 	public String toString() {
-		return "{magnitude: " + speed + ", xVel: " + xVel + ", yVel: " + yVel + ", dir: " + dir + "}";
+		return "{speed: " + speed + ", xVel: " + xVel + ", yVel: " + yVel + ", dir: " + dir + "}";
 	}
 	
 	public static void main(String[] args) {
