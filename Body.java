@@ -9,7 +9,6 @@
 public abstract class Body {
 
 	// Fields
-	public static final double G = 6.674 * Math.pow(10, -8);
 	private double mass, speed, dir, radius;
 	private Point loc;
 	private Vector vector;
@@ -57,28 +56,10 @@ public abstract class Body {
 		// Distance between bodies
 		double distanceTo = loc.distanceTo(b.loc());
 		// Orbital velocity
-		speed = Math.sqrt((G * (mass + b.mass())) / distanceTo) + b.speed();
+		speed = Math.sqrt((Universe.G * (mass + b.mass())) / distanceTo);
 		// Component x and y velocities
-		double xVel = Math.cos(dir) * speed;
-		double yVel = Math.sin(dir) * speed;
-		vector = new Vector(xVel, yVel);
-	}
-	
-	// not yet working
-	/** Used if the body of orbit is orbiting another body itself. */
-	public void circOrbit(Body b1, Body b2) {
-		// Directions normal to other bodies
-		dir = Math.PI/2 - loc.dirTo(b1.loc());
-		// Distance between bodies
-		double distanceToOne = loc.distanceTo(b1.loc());
-		double distanceToTwo = loc.distanceTo(b2.loc());
-		// Orbital velocity
-		double orbVelMinor = Math.sqrt((G * (mass + b1.mass())) / distanceToOne);
-		double orbVelMajor = Math.sqrt((G * (mass + b2.mass())) / distanceToTwo);
-		speed =  (orbVelMinor + orbVelMajor);
-		// Component x and y velocities
-		double xVel = Math.cos(dir) * speed;
-		double yVel = Math.sin(dir) * speed;
+		double xVel = (Math.cos(dir) * speed) + b.vector().xVel();
+		double yVel = (Math.sin(dir) * speed) + b.vector().yVel();
 		vector = new Vector(xVel, yVel);
 	}
 	
@@ -87,7 +68,7 @@ public abstract class Body {
 	public void circOrbit(Point p, double m) {
 		dir = Math.PI/2 - loc.dirTo(p);
 		double distanceTo = loc.distanceTo(p);
-		speed = Math.sqrt((G * m) / distanceTo);
+		speed = Math.sqrt((Universe.G * m) / distanceTo);
 		double xVel = Math.cos(dir) * speed;
 		double yVel = Math.sin(dir) * speed;
 		vector = new Vector(xVel, yVel);
