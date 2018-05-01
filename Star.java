@@ -5,6 +5,8 @@ public class Star extends Body {
 		super(mass, vector, loc, showVector);
 	}
 	
+	public Star() { super(); }
+	
 	public void draw(Vector force) {
 		if(super.show()) {
 			// Drawing the force on this body
@@ -22,6 +24,8 @@ public class Star extends Body {
 		StdDraw.setPenColor(StdDraw.YELLOW);
 		StdDraw.filledCircle(super.loc().x(), super.loc().y(), super.radius());
 	}
+	
+	public String getType() { return "Star"; }
 	
 	public String toString() {
 		return "Star: " + super.toString();
