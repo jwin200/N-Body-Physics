@@ -5,6 +5,8 @@ public class Planet extends Body {
 		super(mass, vector, loc, showVector);
 	}
 	
+	public Planet() { super(); }
+	
 	public void draw(Vector force) {
 		if(super.show()) {
 			// Drawing the force on this body
@@ -22,6 +24,8 @@ public class Planet extends Body {
 		StdDraw.setPenColor(StdDraw.RED);
 		StdDraw.filledCircle(super.loc().x(), super.loc().y(), super.radius());
 	}
+	
+	public String getType() { return "Planet"; }
 	
 	public String toString() {
 		return "Planet: " + super.toString();
