@@ -6,8 +6,8 @@ import java.util.ArrayList;
  * gravitational fields. Orbits and other interactions
  * are modeled.
  * 
- * @author Jonah Winchell & Nick Schneider
- * @version April 19, 2018
+ * @author Jonah Winchell and Nick Schneider
+ * @version April 30, 2018
  */
 public class Universe {
 	// List of all bodies in the universe
@@ -42,14 +42,29 @@ public class Universe {
 		// Cycling through each body
 		for(int i = 0; i < bodies.size(); i++) {
 			Vector force = new Vector(0, 0);
-			// Creating a total force vector for this body
+			Body b1 = new Star(), b2 = new Star();
+			// Creating a total force vector and checking for collisions
 			for(Body body : bodies) {
 				if(body != bodies.get(i)) {
 					force = force.add(calcVel(bodies.get(i), body));
-					//bodies.get(i).
+					if(checkCollide(bodies.get(i), body)) {
+						b1 = bodies.get(i);
+						b2 = body;
+						System.out.println(b1.getType() + " crashed into " + b2.getType());
+					}
 				}
 			}
-			// Imparting that force vector onto the body
+			// Collision handling
+			boolean add = false;
+			for(int e = bodies.size()-1; e >= 0; e--) { 
+				if(bodies.get(e) == b1 || bodies.get(e) == b2) { 
+					bodies.remove(e); 
+					add = true;
+				}
+			}
+			if(add) { add(collide(b1, b2)); for(Body body : bodies) { System.out.println(body); } }
+			
+			// Imparting net force vector onto the body
 			bodies.get(i).step(force);
 		}
 		StdDraw.show();
@@ -73,6 +88,32 @@ public class Universe {
 		return num / denom;
 	}
 	
+	/** Two objects have collided if the sum of their radii are greater than the distance between them. */
+	public boolean checkCollide(Body b1, Body b2) {
+		if(b1.radius() + b2.radius() > b1.loc().distanceTo(b2.loc())) { return true; }
+		return false;
+	}
+	
+	/** Combining the two bodies after a collision. */
+	public Body collide(Body b1, Body b2) {
+		// Calculating new mass, location, and velocity
+		double mass = b1.mass() + b2.mass(); // Mass of system
+		// Location of new body weighted by mass
+		double x = (b1.loc().x() * b1.mass() + b2.loc().x() * b2.mass()) / (mass);
+		double y = (b1.loc().y() * b1.mass() + b2.loc().y() * b2.mass()) / (mass);
+		Point p = new Point(x, y);
+		// Velocities weighted by mass
+		double xVel = (b1.vector().xVel() * b1.mass() + b2.vector().xVel() * b2.mass()) / (mass);
+		double yVel = (b1.vector().yVel() * b1.mass() + b2.vector().yVel() * b2.mass()) / (mass);
+		Vector vec = new Vector(xVel, yVel);
+		// Creating the new body
+		if(b1.getType().equals("Star") || b2.getType().equals("Star")) {
+			return new Star(mass, vec, p, b1.show());
+		} else { 
+			return new Planet(mass, vec, p, b1.show());
+		}
+	}
+	
 	/** Adds a body to the Bodies List. */
 	public void add(Body body) { bodies.add(body); }
 	
@@ -80,27 +121,34 @@ public class Universe {
 		boolean showForces = false;
 		Point center = new Point(xSCALE/2, ySCALE/2);
 		Universe universe = new Universe();
-		
+		/*
 		Body sun = new Star(1989000000, new Vector(0, 0), center, showForces);
-		Body venus = new Planet(4867, new Vector(0, 0), new Point(2210, 2000), showForces);
-		Body earth = new Planet(5972000, new Vector(0, 0), new Point(2000, 1000), showForces);
-		Body moon = new Star(73000, new Vector(0, 0), new Point(2000, 1030), showForces);
+		Body venus = new Planet(4867, new Vector(0, .4), new Point(2210, 2000), showForces);
+		Body earth = new Planet(59720, new Vector(0, 0), new Point(2000, 1000), showForces);
+		Body moon = new Planet(73, new Vector(0, 0), new Point(2000, 1030), showForces);
 		Body jupiter = new Planet(1898000, new Vector(0, 0), new Point(2000, 3500), showForces);
 		Body mars = new Planet(639, new Vector(0, 0), new Point(2000, 2450), showForces);
 		Body saturn = new Planet(568300, new Vector(0, 0), new Point(2000, 3900), showForces);
-		//venus.circOrbit(sun);
+		venus.circOrbit(sun);
 		earth.circOrbit(sun);
-		moon.circOrbit(earth);
+		moon.circOrbit(earth, true);
 		jupiter.circOrbit(sun);
 		mars.circOrbit(sun);
 		saturn.circOrbit(sun);
 		universe.add(sun);
-		//universe.add(venus);
+		universe.add(venus);
 		universe.add(earth);
 		universe.add(moon);
-		//universe.add(mars);
-	    //universe.add(jupiter);
-	    //universe.add(saturn);
+		universe.add(mars);
+	    universe.add(jupiter);
+	    universe.add(saturn);
+	    */
+		Body sun = new Star(1989000000, new Vector(0, 0), center, showForces);
+		Body venus = new Planet(486700000, new Vector(0, 0), new Point(1000, 1800), showForces);
+		venus.binOrbit(sun);
+		universe.add(sun);
+		universe.add(venus);
+		
 	    for(Body body : bodies) { System.out.println(body); }
 		universe.run();
 	}
