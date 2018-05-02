@@ -1,9 +1,16 @@
-
+/**
+ * An body to represent planets in a universe. Includes
+ * draw, getType, and toString methods.
+ * @author Jonah Winchell and Nick Schneider
+ * @version May 2, 2018
+ */
 public class Planet extends Body {
 	
 	public Planet(double mass, Vector vector, Point loc, boolean showVector) {
 		super(mass, vector, loc, showVector);
 	}
+	
+	public Planet() { super(); }
 	
 	public void draw(Vector force) {
 		if(super.show()) {
@@ -22,6 +29,8 @@ public class Planet extends Body {
 		StdDraw.setPenColor(StdDraw.RED);
 		StdDraw.filledCircle(super.loc().x(), super.loc().y(), super.radius());
 	}
+	
+	public String getType() { return "Planet"; }
 	
 	public String toString() {
 		return "Planet: " + super.toString();
