@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * are modeled.
  * 
  * @author Jonah Winchell and Nick Schneider
- * @version April 30, 2018
+ * @version May 2, 2018
  */
 public class Universe {
 	// List of all bodies in the universe
@@ -54,6 +54,9 @@ public class Universe {
 					}
 				}
 			}
+			// Imparting net force vector onto the body
+			bodies.get(i).step(force);
+			
 			// Collision handling
 			boolean add = false;
 			for(int e = bodies.size()-1; e >= 0; e--) { 
@@ -62,10 +65,7 @@ public class Universe {
 					add = true;
 				}
 			}
-			if(add) { add(collide(b1, b2)); for(Body body : bodies) { System.out.println(body); } }
-			
-			// Imparting net force vector onto the body
-			bodies.get(i).step(force);
+			if(add) { add(collide(b1, b2)); }
 		}
 		StdDraw.show();
 	}
@@ -114,24 +114,25 @@ public class Universe {
 		}
 	}
 	
-	/** Adds a body to the Bodies List. */
-	public void add(Body body) { bodies.add(body); }
+	/** Adds bodies to the universe. */
+	public static void add(Body... bodyList) { for(Body body : bodyList) { bodies.add(body); } }
 	
+	/** Creates and initializes all bodies in the universe. */
 	public static void init() {
 		boolean showForces = false;
 		Point center = new Point(xSCALE/2, ySCALE/2);
 		Universe universe = new Universe();
 		/*
 		Body sun = new Star(1989000000, new Vector(0, 0), center, showForces);
-		Body venus = new Planet(4867, new Vector(0, .4), new Point(2210, 2000), showForces);
-		Body earth = new Planet(59720, new Vector(0, 0), new Point(2000, 1000), showForces);
-		Body moon = new Planet(73, new Vector(0, 0), new Point(2000, 1030), showForces);
+		Body venus = new Planet(4867, new Vector(0, 0), new Point(2210, 2000), showForces);
+		Body earth = new Planet(99720000, new Vector(0, 0), new Point(2000, 1000), showForces);
+		Body moon = new Star(73, new Vector(0, 0), new Point(2000, 1030), showForces);
 		Body jupiter = new Planet(1898000, new Vector(0, 0), new Point(2000, 3500), showForces);
 		Body mars = new Planet(639, new Vector(0, 0), new Point(2000, 2450), showForces);
 		Body saturn = new Planet(568300, new Vector(0, 0), new Point(2000, 3900), showForces);
 		venus.circOrbit(sun);
 		earth.circOrbit(sun);
-		moon.circOrbit(earth, true);
+		moon.soiOrbit(earth);
 		jupiter.circOrbit(sun);
 		mars.circOrbit(sun);
 		saturn.circOrbit(sun);
@@ -142,13 +143,16 @@ public class Universe {
 		universe.add(mars);
 	    universe.add(jupiter);
 	    universe.add(saturn);
-	    */
-		Body sun = new Star(1989000000, new Vector(0, 0), center, showForces);
-		Body venus = new Planet(486700000, new Vector(0, 0), new Point(1000, 1800), showForces);
-		venus.binOrbit(sun);
-		universe.add(sun);
-		universe.add(venus);
+		*/
+		Body sun = new Star(1989000000, new Vector(0, 0), new Point(1000, 2000), showForces);
+		Body sun2 = new Star(1989000000, new Vector(0, 0), new Point(3000, 2000), showForces);
+		Body planet = new Planet(1898000, new Vector(0, 0), new Point(1000, 2300), showForces);
+		Body planet2 = new Planet(568300, new Vector(0, 0), new Point(3000, 1700), showForces);
+		sun2.binOrbit(sun);
+		planet.circOrbit(sun);
+		planet2.circOrbit(sun2);
 		
+		add(sun, sun2, planet, planet2);
 	    for(Body body : bodies) { System.out.println(body); }
 		universe.run();
 	}

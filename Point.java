@@ -52,4 +52,11 @@ public class Point {
   public double distanceTo(Point p) {
     return Math.sqrt(Math.pow((this.x - p.x), 2) + Math.pow((this.y - p.y), 2));
   }
+  
+  /** Returns the average of two points. */
+  public Point average(Point p1, Point p2) {
+	  double x = (p1.x() + p2.x()) / 2;
+	  double y = (p1.y() + p2.y()) / 2;
+	  return new Point(x, y);
+  }
 }

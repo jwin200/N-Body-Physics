@@ -1,4 +1,9 @@
-
+/**
+ * An body to represent planets in a universe. Includes
+ * draw, getType, and toString methods.
+ * @author Jonah Winchell and Nick Schneider
+ * @version May 2, 2018
+ */
 public class Planet extends Body {
 	
 	public Planet(double mass, Vector vector, Point loc, boolean showVector) {

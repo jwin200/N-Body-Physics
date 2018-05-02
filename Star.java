@@ -1,4 +1,9 @@
-
+/**
+ * An body to represent stars in a universe. Includes
+ * draw, getType, and toString methods.
+ * @author Jonah Winchell and Nick Schneider
+ * @version May 2, 2018
+ */
 public class Star extends Body {
 	
 	public Star(double mass, Vector vector, Point loc, boolean showVector) {
