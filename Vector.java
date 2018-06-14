@@ -27,8 +27,8 @@ public class Vector {
 	}
 	
 	public Vector() {
-		xVel = Math.random();
-		yVel = Math.random();
+		xVel = (Math.random()*3) - 1.5;
+		yVel = (Math.random()*3) - 1.5;
 		dir = Math.random();
 		speed = Math.sqrt(Math.pow(xVel, 2) + Math.pow(yVel, 2));
 	}
