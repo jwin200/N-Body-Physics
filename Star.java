@@ -1,5 +1,5 @@
 /**
- * An body to represent stars in a universe. Includes
+ * A body to represent stars in a universe. Includes
  * draw, getType, and toString methods.
  * @author Jonah Winchell and Nick Schneider
  * @version May 2, 2018
@@ -8,6 +8,10 @@ public class Star extends Body {
 	
 	public Star(double mass, Vector vector, Point loc, boolean showVector) {
 		super(mass, vector, loc, showVector);
+	}
+	
+	public Star(double mass, Vector vector, Point loc, boolean showVector, boolean trace) {
+		super(mass, vector, loc, showVector, trace);
 	}
 	
 	public Star() { super(); }
@@ -24,6 +28,13 @@ public class Star extends Body {
 			newX = super.loc().x() + (super.vector().xVel() * 1000);
 			newY = super.loc().y() + (super.vector().yVel() * 1000);
 			StdDraw.line(super.loc().x(), super.loc().y(), newX, newY);
+		}
+		if(super.trace()) {
+			// Drawing the body's trail
+			StdDraw.setPenColor(StdDraw.GREEN);
+			for(Point p : super.tracedPoints()) {
+				StdDraw.point(p.x(), p.y());
+			}
 		}
 		// Drawing the body
 		StdDraw.setPenColor(StdDraw.YELLOW);

@@ -2,7 +2,7 @@
  * An object to represent a point with x and y coordinates.
  * Also calculates distance to, and angle to other Point objects.
  * 
- * @author Jonah Winchell
+ * @author Jonah Winchell and Nick Schneider
  * @version April 18, 2018
  */
 public class Point {
@@ -24,6 +24,10 @@ public class Point {
   
   public Point() {
     this(Math.random(), Math.random());
+  }
+  
+  public Point(double range) {
+	  this(Math.random()*range, Math.random()*range);
   }
   
   // Methods
@@ -57,6 +61,13 @@ public class Point {
   public Point average(Point p1, Point p2) {
 	  double x = (p1.x() + p2.x()) / 2;
 	  double y = (p1.y() + p2.y()) / 2;
+	  return new Point(x, y);
+  }
+  
+  /** Adds two points together. */
+  public Point add(Point p) {
+	  double x = this.x + p.x();
+	  double y = this.y + p.y();
 	  return new Point(x, y);
   }
 }
